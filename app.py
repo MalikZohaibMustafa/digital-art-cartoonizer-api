@@ -140,7 +140,7 @@ def submit():
             # filename = ImgName_unique
 
         # return send_file(generated_art_path , mimetype="image/*")
-        return jsonify({'image':'http://localhost:2000/'+generated_art_path})
+        return jsonify({'image':'https://digital-art-cartoonizer-api.onrender.com/'+generated_art_path})
 
     else:
         return jsonify({"Message":"Allowed image types are - png, jpg, jpeg"})
