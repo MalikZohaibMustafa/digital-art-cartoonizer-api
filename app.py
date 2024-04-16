@@ -146,8 +146,50 @@ def submit():
         return jsonify({"Message":"Allowed image types are - png, jpg, jpeg"})
         # flash('Allowed image types are - png, jpg, jpeg')
         # return redirect(request.url)
-        
-        
+
+
+@app.route('/generate', methods=['POST'])
+def generate():
+    global uploadedImage
+    global generated_art_path
+    global generated_art_name
+
+    print(dict(request.files))
+    if 'img' not in request.files:
+        resp = jsonify({'message':'No file in the request'})
+        resp.status_code = 400   # 400 ---> Bad Request
+        return resp
+
+    uploadedImage = request.files["img"]
+
+    if uploadedImage.filename == '':
+        resp = jsonify({'message':'No image selected for uploading'})
+        resp.status_code = 400
+        return resp
+
+    if uploadedImage and allowed_file(uploadedImage.filename):
+        ImgName = secure_filename(uploadedImage.filename)
+        ImgName_unique = uniqueImgName(ImgName, isGenerated=False)
+        uploadedImage.save(os.path.join(app.config['UPLOAD_FOLDER'], ImgName_unique))
+        print('Image successfully uploaded')
+
+        img_path = f"./static/{ImgName_unique}"
+        img_numpy = plt.imread(img_path)
+        img_numpy = img_numpy.astype(np.uint8)
+
+        cartoon_img = generate_cartoonize_img(img_numpy, LINE_WIDTH, BLUR_VALUE, TOTAL_COLORS, EPOCHS, ACCURACY)
+        generated_art_name = uniqueImgName(ImgName_unique, isGenerated=True)
+        generated_art_path = f"./static/{generated_art_name}"
+
+        cartoon_img = Image.fromarray(cartoon_img)
+        cartoon_img.save(generated_art_path)
+        print('Image processed and saved:', generated_art_path)
+
+        return send_file(generated_art_path, mimetype='image/jpeg')
+
+    else:
+        return jsonify({"message":"Allowed image types are - png, jpg, jpeg"})
+
 
 @app.route('/art_generated/<filename>')
 def display_image(ImgName):        
@@ -155,9 +197,6 @@ def display_image(ImgName):
 
 
 
-@app.route('/cartoonized/<ImgFileName>')
-def cartoonizedImg(ImgFileName):
-    pass
 
 
 @app.route('/download', methods=['GET'])
