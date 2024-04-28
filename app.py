@@ -103,7 +103,7 @@ def caart(img):
     output=np.array(img)
     x,y,c=output.shape
     for i in range(c):
-        output[:,:,i]=cv2.bilateralFilter(output[:,:,i],5,150,150)
+        output[:,:,i]=cv2.bilateralFilter(output[:,:,i],3,150,150)
 
     edge=cv2.Canny(output, 100, 200)
     output=cv2.cvtColor(output,cv2.COLOR_RGB2HSV)
