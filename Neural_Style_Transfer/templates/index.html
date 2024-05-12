@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Main Page</title>
+</head>
+
+<body style="background-color: rgb(121, 174, 255);">
+    <h1>This is home page</h1>
+
+    <form action="/submit" , method="post" enctype="multipart/form-data">
+        <label for="name">Name</label> <br>
+        <input type="text" name="username" , id="username"> <br>
+
+        <label for="email">Email</label> <br>
+        <input type="email" name="email" id="email"> <br> <br>
+
+        <input type="image" src="/home/shahrayar/Desktop/Flask_Practice/base.jpeg" alt="Some Random Image"> <br>
+
+        <label for="math">Math Marks</label> <br>
+        <input type="text" name="math" , id="math"> <br>
+
+        <label for="comp">Computer Marks</label> <br>
+        <input type="text" name="comp" id="comp"> <br> <br>
+
+        <input type="file" name="img" id="img"> <br> <br>
+
+
+        <input type="submit" value="Submit">
+
+
+    </form>
+
+
+    <div class="container">
+
+        <div class="row">
+
+        </div>
+
+    </div>
+
+    <!-- ----------------------- -->
+
+    <h2 style="text-align: center;font-size:30px;">Select a file to upload</h2>
+    <p>
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+    </p>
+    {% if filename %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7" id="firstimage">
+                <img src="{{ url_for('static', filename = filename) }}" width="250" height="300">
+            </div>
+            {% endif %}
+
+            <!-- ----------------------------------- -->
+            {% if art_file %}
+            <div class="col-md-5">
+                <div class="cartoon-img">
+                    <img src="{{ url_for('static', filename = art_file) }}" width="250" height="300">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- ------------------------------------ -->
+
+    <!-- ----------------------- -->
+
+
+    <!-- {% with name="World" %}     
+            
+                <div>Name of file is: {{filename}}!</div>
+            
+            {% endwith %} -->
+
+    <!-- ------------------------ -->
+
+
+
+
+
+    <div class="container-fluid justify-center">
+        <div class="row">
+            <div class="col-md-6 offset-md-6" id="uploadcontentimage">
+                <form method="post" action="/submit" enctype="multipart/form-data">
+                    <dl>
+
+                        <p>
+                            <label>Upload Content Image </label> <br>
+                            <input type="file" name="content_img" value="Upload Content Image" class="form-control" autocomplete="off" style="padding:10px;background-color: rgb(212, 212, 243);" required>
+                        </p>
+
+
+                    </dl>
+            </div>
+            <div class="col-md-3 offset-md-3" id="uploadstyleimage">
+                <dl>
+                    <p>
+                        <label>Upload Style Image </label> <br>
+                        <input type="file" name="style_img" value="Upload Style Image" class="form-control" autocomplete="off" required>
+                    </p>
+                </dl>
+            </div>
+        </div>
+
+        <p class="text-center">
+            <input type="submit" value="Generate NST Art" class="btn btn-info">
+        </p>
+        </form>
+    </div>
+
+
+
+
+    {% if art_file %}
+
+    <!-- For download button -->
+
+    <form action="/download" method="get">
+
+        <p class="text-center">
+            <input type="submit" value="Download Art" id="download">
+        </p>
+
+
+    </form>
+
+    <!-- For share art button -->
+
+    <form action="/share">
+
+        <p class="text-center">
+            <input type="submit" value="Share Art" id="share">
+        </p>
+
+    </form>
+
+
+
+    <!-- For buy/print art button -->
+
+    <form action="/buy">
+
+        <p class="text-center">
+            <input type="submit" value="Buy Art" id="buy">
+        </p>
+
+    </form>
+
+
+    {% endif %}
+
+
+    <!-- ------------------------ -->
+
+
+</body>
+
+</html>
+
+
+<style>
+    input[type="submit"] {
+        background-color: grey;
+        color: white;
+    }
+    
+    input[type="submit"]:hover {
+        background-color: rgb(6, 213, 250);
+        color: white;
+    }
+    
+    #uploadcontentimage {
+        padding-left: 30%;
+    }
+    
+    #firstimage {
+        padding-left: 30%;
+    }
+    
+    @media only screen and (max-width: 1000px) {
+        #uploadstyleimage {
+            padding: 0px;
+        }
+        #uploadcontentimage {
+            padding-left: 0%;
+        }
+        #firstimage {
+            padding-left: 0%;
+        }
+    }
+</style>
